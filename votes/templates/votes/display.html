@@ -1,0 +1,78 @@
+{% extends "votes/base.html" %}
+{%load vote_tags%}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<br>
+<div class="container">
+  <h1>Marlow Championship Voting</h1>
+
+  <p>Please note votes are final and once submitted cannot be changed. </p>
+  <div id="accordion">
+    {%for game,form in games.items%}
+    <div class="card">
+      <div class="card-header">
+        <a class="card-link" data-toggle="collapse" href="#collapse{{game.round}}">
+          Round {{game.round}}: {{game.opponent}}
+        </a>
+      </div>
+      {%if failed is none%}
+        {%if game.game_time|is_current%}
+        <div id="collapse{{game.round}}" class="collapse show" data-parent="#accordion">
+
+        {%elif failed.round == game.round%}
+        <div id="collapse{{game.round}}" class="collapse show" data-parent="#accordion">
+        {%else%}
+        <div id="collapse{{game.round}}" class="collapse" data-parent="#accordion">
+        {%endif%}
+
+      {%else%}
+        {%for fgame, fkey in failed.items%}
+
+          {%if fgame.round == game.round%}
+          <div id="collapse{{game.round}}" class="collapse show" data-parent="#accordion">
+              {%for field, er in fkey.items%}
+              <div class="alert alert-danger">
+                  <strong>{{ er|escape }}</strong>
+              </div>
+              {%endfor%}
+
+          {%else%}
+          <div id="collapse{{game.round}}" class="collapse" data-parent="#accordion">
+          {%endif%}
+        {%endfor%}
+      {%endif%}
+        <div class="card-body">
+          <h3>Round {{game.round}}</h3>
+          <h4>Opposition: {{game.opponent}}</h4>
+          <h4>Result: {{game.goals_for}}-{{game.goals_againt}} {%if game.goals_for > game.goals_againt%} Win{%elif game.goals_for == game.goals_againt %} Draw {%else%} Loss {%endif%} </h4>
+          <h4>Game Time: {{game.game_time|date:'d-m-Y H:i'}}</h4>
+          <br>
+          <br>
+          <h3>Best on ground votes</h3>
+
+          {% if game.game_time|is_future %}
+          <h4>Voting for this round is not open yet!</h4>
+          {%elif form.1 == 'Y'%}
+          <h4>You have already voted for this round!</h4>
+          {% elif game.opponent == 'BYE' %}
+          <h4>You cannot vote on a BYE.</h4>
+
+          {% else %}
+
+          <form action="{% url 'votes:cast-vote' game.pk %}" method="POST">
+            {% csrf_token %}
+             {{ form.0|crispy }}
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+  </div>
+</div>
+
+{% endblock %}

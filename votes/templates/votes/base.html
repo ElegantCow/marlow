@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{%load vote_tags%}
+{% load crispy_forms_tags %}
+<html>
+<head>
+  <title>Bootstrap Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'votes:votepage' %}">Marlow</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    {% if request.user.is_staff %}
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="{% url 'votes:yet_to_vote' %}">Yet to Vote</a>
+      <a class="nav-item nav-link" href="{% url 'votes:weekly' %}">Weekly Results</a>
+      <a class="nav-item nav-link" href="{% url 'votes:total' %}">Cumulative Results</a>
+      <a class="nav-item nav-link" href="{% url 'admin:index' %}">Admin Portal</a>
+    </div>
+    {% endif %}
+    <div class="navbar-nav ml-auto">
+      <a class="nav-item nav-link" href="{% url 'passchange' %}">Change Password</a>
+      <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+    </div>
+  </div>
+</nav>
+{% block content %}
+
+{% endblock %}
+</body>
+</html>

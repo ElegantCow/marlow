@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Marlow Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:bold,bolditalic|Orbitron:bold" >
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron" style="background-color:transparent !important;">
+        <div class="card">
+          <div class="card-header" style="font-family: 'Orbitron', sans-serif; background-color: #44618e; color: white;">Marlow Login</div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              {{ form|crispy }}
+              <button type="submit" class="btn btn-success">Login</button>
+              <br>
+              <br>
+              <p>Fields marked with an asterisk are required.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
